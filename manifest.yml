@@ -1,0 +1,8 @@
+---
+applications:
+- name: openaiapp
+  routes:
+    - route: node-1234-openai-5678.cfapps.ap21.hana.ondemand.com
+  path: .
+  memory: 128M
+  buildpack: nodejs_buildpack

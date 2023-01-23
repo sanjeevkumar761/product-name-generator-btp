@@ -3,10 +3,12 @@ import { useState } from "react";
 import styles from "./index.module.css";
 
 export default function Home() {
-  const [animalInput, setAnimalInput] = useState("");
+  const [productDescription, setproductDescription] = useState("");
+  const [productSeedWords, setproductSeedWords] = useState("");
   const [result, setResult] = useState();
 
   async function onSubmit(event) {
+    //console.log(JSON.stringify({ productDescription: productDescription, productSeedWords: productSeedWords  }));
     event.preventDefault();
     try {
       const response = await fetch("/api/generate", {
@@ -14,7 +16,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ animal: animalInput }),
+        body: JSON.stringify({ productDescription: productDescription, productSeedWords: productSeedWords  }),
       });
 
       const data = await response.json();
@@ -23,7 +25,8 @@ export default function Home() {
       }
 
       setResult(data.result);
-      setAnimalInput("");
+      setproductDescription("");
+      setproductSeedWords("");
     } catch(error) {
       // Consider implementing your own error handling logic here
       console.error(error);
@@ -35,19 +38,26 @@ export default function Home() {
     <div>
       <Head>
         <title>OpenAI Quickstart</title>
-        <link rel="icon" href="/dog.png" />
+        <link rel="icon" href="/app-indicator.svg" />
       </Head>
 
       <main className={styles.main}>
-        <img src="/dog.png" className={styles.icon} />
-        <h3>Name my pet</h3>
+        <img src="/app-indicator.svg" className={styles.icon} />
+        <h3>Generate product names</h3>
         <form onSubmit={onSubmit}>
           <input
             type="text"
-            name="animal"
-            placeholder="Enter an animal"
-            value={animalInput}
-            onChange={(e) => setAnimalInput(e.target.value)}
+            name="productDescription"
+            placeholder="Enter a product description e.g., A home milkshake maker"
+            value={productDescription}
+            onChange={(e) => setproductDescription(e.target.value)}
+          />
+          <input
+            type="text"
+            name="productSeedWords"
+            placeholder="Enter comma-separated product seed words e.g., fast, healthy, compact"
+            value={productSeedWords}
+            onChange={(e) => setproductSeedWords(e.target.value)}
           />
           <input type="submit" value="Generate names" />
         </form>
